@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Amazon Product Intelligence Platform — NLP-powered customer review analytics, sentiment classification, fake review detection, and AI summaries." />
+  <title>Amazon Intelligence Platform | NLP Review Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ─── SIDEBAR ─────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="url(#g1)" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M2 17l10 5 10-5" stroke="url(#g1)" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M2 12l10 5 10-5" stroke="url(#g1)" stroke-width="1.5" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="g1" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#F59E0B"/>
+            <stop offset="1" stop-color="#06B6D4"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">AmazonIQ</div>
+      <div class="brand-sub">Intelligence Platform</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item active" href="#" data-panel="dashboard" id="nav-dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="#" data-panel="analyzer" id="nav-analyzer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Review Analyzer
+    </a>
+    <a class="nav-item" href="#" data-panel="products" id="nav-products">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Products
+    </a>
+    <a class="nav-item" href="#" data-panel="training" id="nav-training">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/><path d="m21 3-3 3 3 3"/></svg>
+      Model Training
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      API Online
+    </div>
+  </div>
+</aside>
+
+<!-- ─── MAIN CONTENT ─────────────────────────────────────────────── -->
+<main class="main-content">
+
+  <!-- Header -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title" id="page-title">Analytics Dashboard</h1>
+      <span class="page-subtitle" id="page-subtitle">Real-time NLP insights</span>
+    </div>
+    <div class="topbar-right">
+      <div class="refresh-btn" id="refresh-btn" title="Refresh Data">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      </div>
+      <div class="api-url-badge">
+        <span class="dot-green"></span>
+        localhost:8000
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ PANEL: DASHBOARD ═══════════════════════════════════════ -->
+  <section class="panel active" id="panel-dashboard">
+
+    <!-- KPI Row -->
+    <div class="kpi-grid" id="kpi-grid">
+      <div class="kpi-card" id="kpi-total">
+        <div class="kpi-icon kpi-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="kpi-total-val">—</div>
+          <div class="kpi-label">Total Reviews</div>
+          <div class="kpi-delta positive">+12% this week</div>
+        </div>
+      </div>
+      <div class="kpi-card" id="kpi-sentiment">
+        <div class="kpi-icon kpi-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="kpi-sentiment-val">—</div>
+          <div class="kpi-label">Positive Sentiment</div>
+          <div class="kpi-delta positive" id="kpi-sentiment-delta">of all reviews</div>
+        </div>
+      </div>
+      <div class="kpi-card" id="kpi-fake">
+        <div class="kpi-icon kpi-red">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="kpi-fake-val">—</div>
+          <div class="kpi-label">Fake Reviews Detected</div>
+          <div class="kpi-delta negative" id="kpi-fake-delta">of total</div>
+        </div>
+      </div>
+      <div class="kpi-card" id="kpi-products">
+        <div class="kpi-icon kpi-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+        </div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="kpi-products-val">—</div>
+          <div class="kpi-label">Products Tracked</div>
+          <div class="kpi-delta neutral">across all categories</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Sentiment Distribution</h3>
+          <span class="chart-badge">Live</span>
+        </div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="sentimentChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Star Rating Breakdown</h3>
+          <span class="chart-badge">Live</span>
+        </div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="starChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="table-card">
+      <div class="chart-header">
+        <h3>Product Performance Overview</h3>
+        <button class="btn-sm" id="load-more-products">Load More</button>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table" id="products-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>ASIN</th>
+              <th>Reviews</th>
+              <th>Avg Rating</th>
+              <th>Sentiment</th>
+              <th>Fake %</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="7" class="loading-cell"><div class="spinner"></div> Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PANEL: ANALYZER ════════════════════════════════════════ -->
+  <section class="panel" id="panel-analyzer">
+    <div class="analyzer-layout">
+
+      <!-- Input Card -->
+      <div class="analyzer-input-card">
+        <div class="analyzer-header">
+          <div class="analyzer-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <div>
+            <h2>Review Analyzer</h2>
+            <p>Analyze sentiment & detect fake reviews instantly</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="review-text">Review Text</label>
+          <textarea id="review-text" placeholder="Paste a customer review here to analyze its sentiment and authenticity..." rows="6"></textarea>
+          <div class="char-count" id="char-count">0 / 5000</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="review-rating">Star Rating (optional)</label>
+            <div class="star-selector" id="star-selector">
+              <span class="star-btn" data-val="1">★</span>
+              <span class="star-btn" data-val="2">★</span>
+              <span class="star-btn" data-val="3">★</span>
+              <span class="star-btn" data-val="4">★</span>
+              <span class="star-btn" data-val="5">★</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Verified Purchase</label>
+            <div class="toggle-wrap">
+              <input type="checkbox" id="verified-purchase" class="toggle-input" />
+              <label for="verified-purchase" class="toggle-label"></label>
+              <span class="toggle-text">Yes</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="analyze-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Analyze Review
+        </button>
+
+        <!-- Sample Reviews -->
+        <div class="samples-section">
+          <div class="samples-label">Try sample reviews:</div>
+          <div class="samples-grid">
+            <button class="sample-btn positive-sample" data-review="The battery life on this laptop is incredible - lasts 12 hours easily. The display is crisp and build quality feels premium. Best laptop purchase I've made in years. Highly recommend!" data-rating="5">✅ Genuine Positive</button>
+            <button class="sample-btn negative-sample" data-review="Terrible quality. The product broke after just 2 weeks of normal use. Customer service was unhelpful and refused a refund. Complete waste of money. Do not buy this!" data-rating="1">❌ Genuine Negative</button>
+            <button class="sample-btn fake-sample" data-review="AMAZING PRODUCT!!!! BEST THING EVER!!!! BUY NOW!!!! CHANGED MY LIFE!!!! PERFECT IN EVERY WAY!!!!! ZERO COMPLAINTS!!!!! 5 STARS ALL THE WAY!!!!" data-rating="5">⚠️ Suspicious Review</button>
+            <button class="sample-btn neutral-sample" data-review="It works as expected. Nothing special but gets the job done. The price seems reasonable for what you get. Average quality overall." data-rating="3">➡️ Neutral Review</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Card -->
+      <div class="analyzer-results-card" id="results-card">
+        <div class="results-placeholder" id="results-placeholder">
+          <div class="placeholder-icon">🔍</div>
+          <div class="placeholder-title">Analysis Ready</div>
+          <div class="placeholder-sub">Enter a review and click Analyze to see results</div>
+        </div>
+
+        <div class="results-content hidden" id="results-content">
+          <!-- Sentiment Result -->
+          <div class="result-block">
+            <h3 class="result-title">Sentiment Analysis</h3>
+            <div class="sentiment-display">
+              <div class="sentiment-badge-large" id="sentiment-badge">—</div>
+              <div class="sentiment-details">
+                <div class="detail-row">
+                  <span>Confidence</span>
+                  <span id="sentiment-score">—</span>
+                </div>
+                <div class="confidence-bar-wrap">
+                  <div class="confidence-bar" id="confidence-bar"></div>
+                </div>
+                <div class="detail-row">
+                  <span>Star Class</span>
+                  <div class="stars-display" id="stars-display"></div>
+                </div>
+                <div class="detail-row">
+                  <span>Model</span>
+                  <span class="model-badge" id="model-badge">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fake Detection Result -->
+          <div class="result-block">
+            <h3 class="result-title">Fake Detection</h3>
+            <div class="fake-display">
+              <div class="fake-verdict" id="fake-verdict">—</div>
+              <div class="fake-probability-wrap">
+                <div class="prob-label">
+                  <span>Fake Probability</span>
+                  <span id="fake-prob-pct">—</span>
+                </div>
+                <div class="prob-bar-outer">
+                  <div class="prob-bar-inner" id="fake-prob-bar"></div>
+                </div>
+              </div>
+              <div class="score-row">
+                <div class="mini-score">
+                  <div class="mini-score-val" id="ml-score">—</div>
+                  <div class="mini-score-label">ML Score</div>
+                </div>
+                <div class="mini-score">
+                  <div class="mini-score-val" id="heuristic-score">—</div>
+                  <div class="mini-score-label">Heuristic</div>
+                </div>
+              </div>
+              <div class="reasons-list" id="reasons-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading overlay -->
+        <div class="results-loading hidden" id="results-loading">
+          <div class="loader-ring"></div>
+          <div class="loader-text">Analyzing with NLP models...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PANEL: PRODUCTS ════════════════════════════════════════ -->
+  <section class="panel" id="panel-products">
+    <div class="products-header-row">
+      <div>
+        <h2>Product Intelligence</h2>
+        <p>AI-generated summaries and review analytics per product</p>
+      </div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="product-search" placeholder="Search products..." />
+      </div>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+      <div class="loading-cell"><div class="spinner"></div> Loading products...</div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay hidden" id="product-modal">
+      <div class="modal-box" id="modal-box">
+        <button class="modal-close" id="modal-close">✕</button>
+        <div class="modal-loading hidden" id="modal-loading"><div class="loader-ring"></div> Generating AI Summary...</div>
+        <div class="modal-content" id="modal-content"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PANEL: TRAINING ════════════════════════════════════════ -->
+  <section class="panel" id="panel-training">
+    <div class="training-layout">
+
+      <!-- Config Card -->
+      <div class="training-config-card">
+        <div class="training-header">
+          <div class="training-icon">🧠</div>
+          <div>
+            <h2>BERT Fine-Tuning</h2>
+            <p>Train a sentiment classification model with MLflow tracking</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="model-select">Base Model</label>
+          <select id="model-select" class="form-select">
+            <option value="distilbert-base-uncased">DistilBERT Base (Recommended)</option>
+            <option value="bert-base-uncased">BERT Base Uncased</option>
+            <option value="bert-large-uncased">BERT Large Uncased</option>
+            <option value="roberta-base">RoBERTa Base</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="epochs-slider">Training Epochs: <span id="epochs-display">3</span></label>
+          <input type="range" id="epochs-slider" min="1" max="10" value="3" class="slider" />
+          <div class="slider-marks">
+            <span>1</span><span>5</span><span>10</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Training Mode</label>
+          <div class="mode-cards">
+            <div class="mode-card selected" id="mode-simulate" data-mode="simulate">
+              <div class="mode-icon">⚡</div>
+              <div class="mode-title">Simulate (Fast)</div>
+              <div class="mode-desc">CPU-friendly demo mode — runs instantly with realistic metrics</div>
+            </div>
+            <div class="mode-card" id="mode-real" data-mode="real">
+              <div class="mode-icon">🔥</div>
+              <div class="mode-title">Real Training</div>
+              <div class="mode-desc">Actual PyTorch BERT fine-tuning — requires GPU + transformers</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="start-training-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start Training
+        </button>
+
+        <!-- Runs History -->
+        <div class="runs-section">
+          <h3 class="section-subtitle">Recent Runs</h3>
+          <div id="runs-list" class="runs-list">
+            <div class="empty-runs">No training runs yet</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Card -->
+      <div class="training-metrics-card">
+        <div class="metrics-header-row">
+          <h3>Training Metrics</h3>
+          <div class="run-status-badge" id="run-status-badge">Idle</div>
+        </div>
+
+        <div class="metrics-kpis" id="metrics-kpis">
+          <div class="metric-pill">
+            <div class="metric-pill-val" id="m-epoch">—</div>
+            <div class="metric-pill-label">Epoch</div>
+          </div>
+          <div class="metric-pill">
+            <div class="metric-pill-val" id="m-train-loss">—</div>
+            <div class="metric-pill-label">Train Loss</div>
+          </div>
+          <div class="metric-pill">
+            <div class="metric-pill-val" id="m-val-loss">—</div>
+            <div class="metric-pill-label">Val Loss</div>
+          </div>
+          <div class="metric-pill">
+            <div class="metric-pill-val" id="m-accuracy">—</div>
+            <div class="metric-pill-label">Accuracy</div>
+          </div>
+          <div class="metric-pill">
+            <div class="metric-pill-val" id="m-f1">—</div>
+            <div class="metric-pill-label">F1 Score</div>
+          </div>
+        </div>
+
+        <div class="chart-card flat">
+          <div class="chart-header">
+            <h4>Loss Curves</h4>
+          </div>
+          <div class="chart-wrap" style="height: 200px">
+            <canvas id="lossChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card flat">
+          <div class="chart-header">
+            <h4>Accuracy & F1</h4>
+          </div>
+          <div class="chart-wrap" style="height: 200px">
+            <canvas id="accChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Training Log -->
+        <div class="log-card">
+          <div class="log-header">
+            <h4>Training Logs</h4>
+            <span class="log-clear" id="log-clear">Clear</span>
+          </div>
+          <pre class="log-terminal" id="log-terminal">Waiting for training to start...\n</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
