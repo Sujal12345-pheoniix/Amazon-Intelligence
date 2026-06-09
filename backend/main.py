@@ -46,7 +46,7 @@ app.add_middleware(
 
 # Serve frontend static files
 import os
-FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
 if os.path.exists(FRONTEND_DIR):
     app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
@@ -184,8 +184,24 @@ def _seed_demo_data():
 async def serve_frontend():
     index_path = os.path.join(FRONTEND_DIR, "index.html")
     if os.path.exists(index_path):
-        return FileResponse(index_path)
+        return FileResponse(index_path, media_type="text/html")
     return {"message": "Amazon Product Intelligence Platform API", "docs": "/api/docs"}
+
+
+@app.get("/styles.css")
+async def serve_css():
+    css_path = os.path.join(FRONTEND_DIR, "styles.css")
+    if os.path.exists(css_path):
+        return FileResponse(css_path, media_type="text/css")
+    raise HTTPException(status_code=404, detail="CSS not found")
+
+
+@app.get("/app.js")
+async def serve_js():
+    js_path = os.path.join(FRONTEND_DIR, "app.js")
+    if os.path.exists(js_path):
+        return FileResponse(js_path, media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="JS not found")
 
 
 @app.get("/api/health")
